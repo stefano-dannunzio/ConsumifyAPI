@@ -3,12 +3,11 @@ const { request, response} = require('express');
 const getAuthFromClientCredentials = require('../services/client_credentials_auth');
 
 
-const getTrack = (req = request, res = response) => {
-    const access_token = getAuthFromClientCredentials();
+const getTrack = async (req = request, res = response) => {    
+    const access_token = await getAuthFromClientCredentials();    
     const { id } = req.params;
 
-    const api_url = `https://api.spotify.com/v1/tracks/${id}`;
-    console.log(api_url);
+    const api_url = `https://api.spotify.com/v1/tracks/${id}`;    
 
     axios.get(api_url, {
         headers: {
@@ -16,10 +15,8 @@ const getTrack = (req = request, res = response) => {
         }
     })
     .then((data) => {
-        console.log(data);
-        res.status(200).json({
-            data
-        });
+        console.log(data.data);
+        res.status(200).json(data.data);
     })
     .catch((error) => {
         // handle error
