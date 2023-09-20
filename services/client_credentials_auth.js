@@ -1,10 +1,11 @@
-var request = require('request'); // "Request" library
+const axios = require('axios').default
 
-var client_id = process.env.SPOTIFY_CLIENT_ID;
-var client_secret = process.env.SPOTIFY_CLIENT_SECRET;
+const client_id = process.env.SPOTIFY_CLIENT_ID;
+const client_secret = process.env.SPOTIFY_CLIENT_SECRET;
+
+const url = 'https://accounts.spotify.com/api/token';
 
 var authOptions = {
-  url: 'https://accounts.spotify.com/api/token',
   headers: {
     'Authorization': 'Basic ' + (new Buffer.from(client_id + ':' + client_secret).toString('base64'))
   },
@@ -15,14 +16,23 @@ var authOptions = {
 };
 
 const getAuthFromClientCredentials = async () => {
-    request.post(authOptions, (error, response, body) => {
-        if (!error && response.statusCode === 200) {
-          var token = body.access_token;
-        }
-        console.log(token);
-        return token;
-      });
 
+  try {
+    const { data } = await axios.post(url, {
+        grant_type: 'client_credentials'
+      }, {
+        headers: {
+          'Authorization': 'Basic ' + (new Buffer.from(client_id + ':' + client_secret).toString('base64')),            
+          'Content-Type': 'application/x-www-form-urlencoded',
+        }
+      }
+    )    
+    return data.access_token || '';
+  } catch (error) {      
+      return false;
+  }
+       
+     
 }
 
 module.exports = getAuthFromClientCredentials;
