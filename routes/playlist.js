@@ -3,6 +3,6 @@ const { getPlaylist } = require('../controllers/playlist');
 
 const rutas = Router();
 
-rutas.get('/playlist/:playlistId', getPlaylist);
+rutas.get('/:playlistId', getPlaylist);
 
 module.exports = rutas;
