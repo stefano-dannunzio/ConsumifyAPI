@@ -27,10 +27,11 @@ const getTrack = async (req = request, res = response) => {
         });
     })
 
-    
+}
 
+const getRecommendations = async (req = request, res = response) => {
 
 }
 
 
-module.exports = {getTrack};
+module.exports = {getTrack, getRecommendations};
