@@ -45,10 +45,20 @@ const getRecommendations = async (req = request, res = response) => {
         console.log('LO SIGUIENTE ES EL ALBUM')
         console.log(data.data.tracks[0].album);
         const { tracks } = data.data;
+        const recommendations = [];
+        let song_id = 1;
         tracks.forEach(track => {
-            console.log(`Nombre: ${track.name}\n Album: ${track.album.name}\n Artista: ${track.artists[0].name}`);            
+            console.log(`------------------------------------------\nNombre de la pista: ${track.name}\nAlbum: ${track.album.name}\nArtista: ${track.artists[0].name}`);
+            recommendations.push({
+                id: song_id,
+                track_name: track.name,
+                album_name: track.album.name,
+                artist_name: track.artists[0].name
+            });
+            song_id++;
         });
-        res.status(200).json(data.data);
+        //res.status(200).json(data.data);
+        res.status(200).json(recommendations);
     })
     .catch((error) => {
         // handle error
