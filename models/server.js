@@ -10,6 +10,7 @@ class Server {
     routers(){
         this.app.use('/tracks', require('../routes/tracks'));
         //this.app.use('/authorized', require('../routes/authorized'));
+        this.app.use('/artists', require('../routes/artists'));
     }
 
     listen(){
