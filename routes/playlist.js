@@ -7,6 +7,7 @@ const rutas = Router();
 rutas.get('/:playlistId', getPlaylist);
 
 // Ruta para filtrar la playlist por artista
-rutas.get('/:playlistId/artistId', getArtistById);
+rutas.get('/:playlistId/artista', getArtistById);
+
 
 module.exports = rutas;

@@ -21,19 +21,18 @@ const getPlaylist = async (req = request, res = response) => {
             
             // Extraer información específica de la respuesta para personalizarla
             const playlistInfo = {
-                name: responseData.name,
-                createdBy: responseData.owner.display_name,
-                createdAt: responseData.snapshot_id.split('T')[0], // Fecha de creación
-                tracks: [],
+                nombrePlaylist: responseData.name,
+                creadaPor: responseData.owner.display_name,
+                canciones: [],
             };
 
             // Recorrer las canciones y obtener el nombre de la canción y el nombre del artista
             responseData.tracks.items.forEach((item) => {
                 const trackInfo = {
-                    name: item.track.name,
-                    artist: item.track.artists.map((artist) => artist.name).join(', '), // Obtener el nombre del artista
+                    nombreCancion: item.track.name,
+                    artista: item.track.artists.map((artist) => artist.name).join(', '), // Obtener el nombre del artista
                 };
-                playlistInfo.tracks.push(trackInfo);
+                playlistInfo.canciones.push(trackInfo);
             });
 
             res.status(200).json(playlistInfo);
@@ -80,12 +79,11 @@ const getArtistById = async (req = request, res = response) => {
 
             // Devolver la respuesta actualizada
                 const respuestaModificada = {
-                name: responseData.name,
-                creator: responseData.owner.display_name,
-                created_at: responseData.snapshot_id, // Esto puede no ser la fecha de creación exacta, verifica si Spotify proporciona esta información
-                tracks: filteredTracks.map(track => ({
-                    name: track.track.name,
-                    artist: track.track.artists.map(artist => artist.name).join(', '), // Para obtener todos los artistas de la canción
+                nombrePlaylist: responseData.name,
+                creadaPor: responseData.owner.display_name,
+                canciones: filteredTracks.map(track => ({
+                    nombreCancion: track.track.name,
+                    Artista: track.track.artists.map(artist => artist.name).join(', '), // Para obtener todos los artistas de la canción
                 })),
             };
 
@@ -109,4 +107,3 @@ const getArtistById = async (req = request, res = response) => {
 
 
 module.exports = { getPlaylist, getArtistById };
-
