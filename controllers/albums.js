@@ -66,6 +66,8 @@ const getAlbumTracks = async (req = request, res = response) => {
 
             const tracks = data.data.tracks.items;
 
+            console.log(data.data.tracks.items);
+
             console.log(`\n       > Tracks del album: ${data.data.name} <  `);
 
             tracks.forEach(element => {
@@ -81,6 +83,7 @@ const getAlbumTracks = async (req = request, res = response) => {
                     track_name: element.name,
                     track_number: element.track_number,
                     album_name: data.data.name,
+                    duration_seconds: element.duration_ms / 60000,
                     artist_name: element.artists[0].name
                 });
             });
@@ -97,4 +100,56 @@ const getAlbumTracks = async (req = request, res = response) => {
         })
 }
 
-module.exports = { getAlbum, getAlbumTracks };
+const getAlbumTrackByNumber = async (req = request, res = response) => {
+    const { number } = req.params;
+    let trackNumber = [];
+
+    albumTracks.forEach(track => {
+        if (track.track_number == number) {
+            trackNumber.push(track);
+        }
+    });
+    if (trackNumber.length == 0) {
+        return res.status(400).json({
+            status: 400,
+            msg: `No existe ese numero de track en ese album.`
+        });
+    }
+    try {
+        res.status(200).json(trackNumber);
+    } catch (error) {
+        console.log(error);
+        res.status(400).json({
+            status: 400,
+            msg: 'Error inesperado'
+        });
+    }
+}
+
+const getAlbumTrackByMinutes = async (req = request, res = response) => {
+    const { minutes } = req.params;
+    let trackByMinutes = [];
+
+    albumTracks.forEach(track => {
+        if (minutes <= track.duration_seconds) {
+            trackByMinutes.push(track);
+        }
+    });
+    if (trackByMinutes.length == 0) {
+        return res.status(400).json({
+            status: 400,
+            msg: `No hay tracks que duren más de ${minutes} minutos.`
+        });
+    }
+    try {
+        res.status(200).json(trackByMinutes);
+    } catch (error) {
+        console.log(error);
+        res.status(400).json({
+            status: 400,
+            msg: 'Error inesperado'
+        });
+    }
+}
+
+module.exports = { getAlbum, getAlbumTracks, getAlbumTrackByNumber, getAlbumTrackByMinutes };
