@@ -76,7 +76,7 @@ const getRecommendations = async (req = request, res = response) => {
 }
 const getRecomById = (req = request, res = response) => {
     const { id } = req.params;
-    if (id > recommendations.length) {
+    if ((id > recommendations.length) || (typeof id != 'number')) {
         res.status(400).json({
             status:400,
             msg: `No existe la recomendación con ese ID, hay máximo ${recommendations.length} recomendaciones.`
