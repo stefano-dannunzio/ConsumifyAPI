@@ -1,18 +1,19 @@
 const express = require('express');
 
 class Server {
-    constructor(){
+    constructor() {
         this.port = process.env.PORT || 3000;
         this.app = express();
         this.routers();
     }
 
-    routers(){
+    routers() {
         this.app.use('/tracks', require('../routes/tracks'));
+        this.app.use('/albums', require('../routes/albums'));
         //this.app.use('/authorized', require('../routes/authorized'));
     }
 
-    listen(){
+    listen() {
         this.app.listen(this.port, () => {
             console.log(`El server esta corriendo en el puerto ${this.port}`);
         });
