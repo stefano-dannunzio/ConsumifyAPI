@@ -92,26 +92,27 @@ const getPlaylistTracksByArtist = async (req = request, res = response) => {
 
         if (response.status === 200) {
             const responseData = { ...response.data };
-            const filteredTracks = artistId
-                ? response.data.tracks.items.filter(item => item.track.artists.some(a => a.id === artistId))
-                : response.data.tracks.items;
 
-            // Actualizar la propiedad 'tracks' en la respuesta con los tracks filtrados
-            responseData.tracks.items = filteredTracks;
+            const filteredTracks = responseData.tracks.items.filter(item => {
+                const artists = item.track.artists.map(artist => artist.id.trim()); // Eliminar espacios en blanco de los IDs de artistas
+                const artistFound = artists.includes(artistId.trim()); // Realizar la comparación después de quitar espacios en blanco
+                return artistFound;
+            });
+            
 
-            const totalCancionesArtista = filteredTracks.length;
-
-            // Devolver la respuesta actualizada
+        // Devolver la respuesta actualizada
             const respuestaModificada = {
                 nombrePlaylist: responseData.name,
                 creadaPor: responseData.owner.display_name,
-                totalCancionesArtista: totalCancionesArtista,
+                totalCancionesArtista: filteredTracks.length,
                 canciones: filteredTracks.map(track => ({
                     nombreCancion: track.track.name,
                     Artista: track.track.artists.map(artist => artist.name).join(', '), // Para obtener todos los artistas de la canción
                     Album: track.track.album.name,
                 })),
             };
+
+            console.log(respuestaModificada)
 
             res.status(200).json(respuestaModificada);
         } else if (response.status === 401) {
