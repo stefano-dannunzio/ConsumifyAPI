@@ -1,8 +1,8 @@
 const { Router } = require('express');
-const { getAlbum } = require('../controllers/albums');
+const { getAlbumTracks } = require('../controllers/albums');
 
 const rutas = Router();
 //RUTA DE REFERENCIA
-rutas.get('/:id', getAlbum);
+rutas.get('/:id', getAlbumTracks);
 
 module.exports = rutas;
