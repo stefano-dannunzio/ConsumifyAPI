@@ -1,13 +1,14 @@
 const { Router } = require('express');
-const { getPlaylist, getArtistById } = require('../controllers/playlist');
+const { getPlaylist, getPlaylistTracks, getPlaylistTracksByArtist } = require('../controllers/playlist');
 
 const rutas = Router();
 
-// Ruta para obtener la playlist por ID
-rutas.get('/:playlistId', getPlaylist);
+// RUTA DE REFERENCIA
+rutas.get('/:id', getPlaylist)
 
-// Ruta para filtrar la playlist por artista
-rutas.get('/:playlistId/artista', getArtistById);
+// getPlaylist - MAXIMO
+rutas.get('/playlistTracks/:id', getPlaylistTracks);
+rutas.get('/:id/playlistTracks/artist', getPlaylistTracksByArtist);
 
 
 module.exports = rutas;
