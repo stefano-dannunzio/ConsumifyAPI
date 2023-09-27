@@ -6,7 +6,7 @@ const rutas = Router();
 
 
 //GetAnArtist'sAlbums - FRANCO
-
+rutas.get('/artistalbum/:id', getAnArtistsAlbums);
 
 
 module.exports = rutas;

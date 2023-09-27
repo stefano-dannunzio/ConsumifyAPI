@@ -16,6 +16,14 @@ const getAnArtistsAlbums = async (req = request, res = response) => {
                 'Authorization': `Bearer ${tokenAcceso}`,
             },
         });
+
+    if (respuesta.status === 200) {
+        const albums = respuesta.data.items;
+
+        res.json({albums});
+
+        console.log(albums);
+    }
 }
 
 module.exports = {getMultipleArtists, getAnArtistsAlbums};
