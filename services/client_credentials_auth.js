@@ -28,7 +28,7 @@ const getAuthFromClientCredentials = async () => {
       }
     )    
     return data.access_token || '';
-  } catch (error) {      
+  } catch (error) {
       return false;
   }
        
