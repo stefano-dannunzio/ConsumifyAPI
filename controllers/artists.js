@@ -114,4 +114,4 @@ getAnArtistAlbumByDate = async (req = request, res = response) => {
 
 
 
-module.exports = {getMultipleArtists, getAnArtistsAlbums, getAnArtistsAlbumBySongs, getAnArtistAlbumByDate};
+module.exports = {getAnArtistsAlbums, getAnArtistsAlbumBySongs, getAnArtistAlbumByDate};
