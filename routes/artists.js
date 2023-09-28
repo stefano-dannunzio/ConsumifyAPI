@@ -1,8 +1,9 @@
 const { Router } = require('express');
 const { getMultipleArtists, getAnArtistsAlbums, getAnArtistsAlbumBySongs, getAnArtistAlbumByDate } = require('../controllers/artists');
 
+
 const rutas = Router();
-//GetMultipleArtists - MAXI
+//GetArtist's TopTracks - EMILIANO
 
 
 //GetAnArtist'sAlbums - FRANCO

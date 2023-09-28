@@ -19,20 +19,20 @@ const getAuthFromClientCredentials = async () => {
 
   try {
     const { data } = await axios.post(url, {
-        grant_type: 'client_credentials'
-      }, {
-        headers: {
-          'Authorization': 'Basic ' + (new Buffer.from(client_id + ':' + client_secret).toString('base64')),            
-          'Content-Type': 'application/x-www-form-urlencoded',
-        }
+      grant_type: 'client_credentials'
+    }, {
+      headers: {
+        'Authorization': 'Basic ' + (new Buffer.from(client_id + ':' + client_secret).toString('base64')),
+        'Content-Type': 'application/x-www-form-urlencoded',
       }
-    )    
+    }
+    )
     return data.access_token || '';
   } catch (error) {
-      return false;
+    return false;
   }
-       
-     
+
+
 }
 
 module.exports = getAuthFromClientCredentials;
