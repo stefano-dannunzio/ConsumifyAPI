@@ -24,9 +24,6 @@ const getAuthFromClientCredentials = async () => {
         headers: {
           'Authorization': 'Basic ' + (new Buffer.from(client_id + ':' + client_secret).toString('base64')),            
           'Content-Type': 'application/x-www-form-urlencoded',
-        },
-        params: {
-          grant_type: 'client_credentials',
         }
       }
     )    
