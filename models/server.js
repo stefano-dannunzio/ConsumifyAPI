@@ -9,6 +9,7 @@ class Server {
 
     routers(){
         this.app.use('/tracks', require('../routes/tracks'));
+        this.app.use('/playlist', require('../routes/playlist'))
         //this.app.use('/authorized', require('../routes/authorized'));
     }
 
