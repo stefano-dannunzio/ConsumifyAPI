@@ -10,6 +10,8 @@ class Server {
     routers() {
         this.app.use('/tracks', require('../routes/tracks'));
 
+        this.app.use('/artists', require('../routes/artists'));
+
         this.app.use('/album', require('../routes/albums'));
 
         this.app.use('/playlist', require('../routes/playlist'))
