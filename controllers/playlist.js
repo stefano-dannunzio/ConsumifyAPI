@@ -55,7 +55,8 @@ const getPlaylistTracks = async (req = request, res = response) => {
                 tracks: responseData.tracks.items.map((item) => ({
                     nombreCancion: item.track.name,
                     artistas: item.track.artists.map((artist) => artist.name).join(', '),
-                    Album: item.track.album.name
+                    Album: item.track.album.name,
+                    imagenCancion: item.track.album.images[0].url, // Agregar la URL de la imagen de la canción
                 })),
             };
 
@@ -109,6 +110,7 @@ const getPlaylistTracksByArtist = async (req = request, res = response) => {
                     nombreCancion: track.track.name,
                     Artista: track.track.artists.map(artist => artist.name).join(', '), // Para obtener todos los artistas de la canción
                     Album: track.track.album.name,
+                    imagenCancion: item.track.album.images[0].url, // Agregar la URL de la imagen de la canción
                 })),
             };
 
