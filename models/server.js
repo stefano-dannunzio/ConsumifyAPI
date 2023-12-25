@@ -5,8 +5,6 @@ class Server {
     constructor() {
         this.port = process.env.PORT || 3000;
         this.app = express();
-        this.app.use(cors({ origin: 'http://localhost:4000' }));
-        this.app.use(cors({ origin: 'https://maxiozonas-consumify.onrender.com/' }));
         this.app.use(cors());
         this.routers();
     }
