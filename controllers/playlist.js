@@ -50,6 +50,7 @@ const getPlaylistTracks = async (req = request, res = response) => {
             // Extraer información específica de la respuesta para personalizarla
             const playlistInfo = {
                 nombrePlaylist: responseData.name,
+                imagenPlaylist: responseData.images[0].url,
                 creador: responseData.owner.display_name,
                 totalCanciones: responseData.tracks.total,
                 tracks: responseData.tracks.items.map((item) => ({
@@ -104,6 +105,7 @@ const getPlaylistTracksByArtist = async (req = request, res = response) => {
         // Devolver la respuesta actualizada
             const respuestaModificada = {
                 nombrePlaylist: responseData.name,
+                imagenPlaylist: responseData.images[0].url,
                 creadaPor: responseData.owner.display_name,
                 totalCancionesArtista: filteredTracks.length,
                 canciones: filteredTracks.map(track => ({
