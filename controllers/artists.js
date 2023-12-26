@@ -7,6 +7,48 @@ const getArtistsTopTracks = async (req = request, res = response) => {
 }
 
 let artistsAlbum = [];
+let artist = [];
+
+const GetArtist = async (req = request, res = response) => {
+    const tokenAcceso = await getAuthFromClientCredentials();
+    const { id } = req.params;
+    const url = `https://api.spotify.com/v1/artists/${id}`;
+
+    const respuesta = axios.get(url, {
+        headers: {
+            'Authorization': `Bearer ${tokenAcceso}`,
+        },
+    })
+
+    .then(({ data }) => {
+        const artistas = data.items;
+
+        artistas.forEach(element => {
+            artist.push ({
+                nombreArtista: element.name,
+                imagenArtista: element.images[0].url
+            })
+        })
+
+        res.status(200).json(artist);
+    })
+
+    .catch((error) => {
+        if (res.status === 400) {
+            res.status(400).json({
+                status: 400,
+                msg: 'Error inesperado'
+            });
+        }
+
+        if (res.status === 401) {
+            res.status(401).json({
+                status: 401,
+                msg: 'Token incorrecto o expirado'
+            })
+        }
+    })
+}
 
 const getAnArtistsAlbums = async (req = request, res = response) => {
     const tokenAcceso = await getAuthFromClientCredentials();
