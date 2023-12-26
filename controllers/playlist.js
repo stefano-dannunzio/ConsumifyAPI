@@ -110,7 +110,7 @@ const getPlaylistTracksByArtist = async (req = request, res = response) => {
                     nombreCancion: track.track.name,
                     Artista: track.track.artists.map(artist => artist.name).join(', '), // Para obtener todos los artistas de la canción
                     Album: track.track.album.name,
-                    imagenCancion: item.track.album.images[0].url, // Agregar la URL de la imagen de la canción
+                    imagenCancion: track.track.album.images[0].url, // Agregar la URL de la imagen de la canción
                 })),
             };
 
