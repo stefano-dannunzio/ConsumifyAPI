@@ -16,7 +16,18 @@ const getPlaylist = async (req = request, res = response) => {
         });
 
         if (responseFromSpotify.status === 200) {
-            res.status(200).json(responseFromSpotify.data);
+            const responseData = responseFromSpotify.data;
+
+            // Extraer información específica de la respuesta para personalizarla
+            const playlistInfo = {
+                id: id,
+                nombrePlaylist: responseData.name,
+                imagenPlaylist: responseData.images[0].url,
+                creador: responseData.owner.display_name,
+                totalCanciones: responseData.tracks.total,
+            };
+
+            res.status(200).json(playlistInfo);
         } else if (responseFromSpotify.status === 401) {
             res.status(401).json({ message: 'Solicitud no autorizada.' });
         } else if (responseFromSpotify.status === 403) {
