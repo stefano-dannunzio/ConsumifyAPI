@@ -1,5 +1,5 @@
 const axios = require('axios');
-const { request, response} = require('express');
+const { request, response } = require('express');
 const getAuthFromClientCredentials = require('../services/client_credentials_auth');
 
 const getArtistsTopTracks = async (req = request, res = response) => {
@@ -8,19 +8,57 @@ const getArtistsTopTracks = async (req = request, res = response) => {
 
 let artistsAlbum = [];
 
+const getArtist = async (req = request, res = response) => {
+    try {
+        const tokenAcceso = await getAuthFromClientCredentials();
+        const { id } = req.params;
+        const url = `https://api.spotify.com/v1/artists/${id}`;
+
+        const respuesta = await axios.get(url, {
+            headers: {
+                'Authorization': `Bearer ${tokenAcceso}`,
+            },
+        });
+
+        const artist = {
+            nombreArtista: respuesta.data.name,
+            imagenArtista: respuesta.data.images[0].url
+        };
+
+        res.status(200).json(artist);
+    } catch (error) {
+        if (error.response && error.response.status === 400) {
+            res.status(400).json({
+                status: 400,
+                msg: 'Error inesperado'
+            });
+        } else if (error.response && error.response.status === 401) {
+            res.status(401).json({
+                status: 401,
+                msg: 'Token incorrecto o expirado'
+            });
+        } else {
+            res.status(500).json({
+                status: 500,
+                msg: 'Error interno del servidor'
+            });
+        }
+    }
+};
+
 const getAnArtistsAlbums = async (req = request, res = response) => {
     const tokenAcceso = await getAuthFromClientCredentials();
     const { id } = req.params;
     const url = `https://api.spotify.com/v1/artists/${id}/albums`;
-    
+
     const respuesta = axios.get(url, {
-            headers: {
-                'Authorization': `Bearer ${tokenAcceso}`,
-            },
+        headers: {
+            'Authorization': `Bearer ${tokenAcceso}`,
+        },
     })
 
-    .then(( {data} ) => {
-        const albums = data.items;        
+        .then(({ data }) => {
+            const albums = data.items;
 
             albums.forEach(element => {
                 artistsAlbum.push({
@@ -29,28 +67,30 @@ const getAnArtistsAlbums = async (req = request, res = response) => {
                     nombreArtista: element.artists[0].name,
                     fechaLanzamiento: element.release_date,
                     cantidadCanciones: element.total_tracks,
-                    precisionFecha: element.release_date_precision
+                    precisionFecha: element.release_date_precision,
+                    imagenAlbum: element.images[0].url
+
                 });
             });
-            
+
             res.status(200).json(artistsAlbum);
-    })
-
-    .catch((error) => {
-        if (res.status === 400 ) {
-            res.status(400).json({
-            status: 400,
-            msg: 'Error inesperado'
-        });
-        }
-
-        if (res.status === 401) {
-            res.status(401).json({
-                status: 401,
-                msg: 'Token incorrecto o expirado'
         })
-        }
-    })
+
+        .catch((error) => {
+            if (res.status === 400) {
+                res.status(400).json({
+                    status: 400,
+                    msg: 'Error inesperado'
+                });
+            }
+
+            if (res.status === 401) {
+                res.status(401).json({
+                    status: 401,
+                    msg: 'Token incorrecto o expirado'
+                })
+            }
+        })
 }
 
 getAnArtistsAlbumBySongs = async (req = request, res = response) => {
@@ -68,15 +108,15 @@ getAnArtistsAlbumBySongs = async (req = request, res = response) => {
             msg: `No hay albumes con mas de ${cantCanciones} canciones`
         })
     }
-    try { 
-        res.status(200).json(albumsBySongs); 
+    try {
+        res.status(200).json(albumsBySongs);
     } catch (error) {
 
         if (res.status === 401) {
             res.status(401).json({
                 status: 401,
                 msg: 'Token incorrecto o expirado'
-        })
+            })
         }
     }
 }
@@ -97,15 +137,15 @@ getAnArtistAlbumByDate = async (req = request, res = response) => {
             msg: 'Error con el parametro'
         })
     }
-    try { 
-        res.status(200).json(albumsByDate); 
+    try {
+        res.status(200).json(albumsByDate);
     } catch (error) {
 
         if (res.status === 401) {
             res.status(401).json({
                 status: 401,
                 msg: 'Token incorrecto o expirado'
-        })
+            })
         }
     }
 }
@@ -114,4 +154,4 @@ getAnArtistAlbumByDate = async (req = request, res = response) => {
 
 
 
-module.exports = {getAnArtistsAlbums, getAnArtistsAlbumBySongs, getAnArtistAlbumByDate};
+module.exports = { getArtist, getAnArtistsAlbums, getAnArtistsAlbumBySongs, getAnArtistAlbumByDate };

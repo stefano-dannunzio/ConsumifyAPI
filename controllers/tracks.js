@@ -58,7 +58,9 @@ const getRecommendations = async (req = request, res = response) => {
                 id: song_id,
                 track_name: track.name,
                 album_name: track.album.name,
-                artist_name: track.artists[0].name
+                album_img: track.album.images[0].url,
+                artist_name: track.artists[0].name,
+                preview_url: track.preview_url
             });
             song_id++;
         });

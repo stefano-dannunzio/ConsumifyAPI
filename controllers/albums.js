@@ -30,7 +30,8 @@ const getAlbum = async (req = request, res = response) => {
                 Album_artist: album.artists[0].name,
                 Album_total_tracks: album.total_tracks,
                 Album_release_date: album.release_date,
-                Album_popularity: album.popularity
+                Album_popularity: album.popularity,
+                Album_image: data.data.images[0].url
             });
 
             res.status(200).json(albumData);
@@ -84,7 +85,8 @@ const getAlbumTracks = async (req = request, res = response) => {
                     track_number: element.track_number,
                     album_name: data.data.name,
                     duration_seconds: element.duration_ms / 60000,
-                    artist_name: element.artists[0].name
+                    artist_name: element.artists[0].name,
+                    album_image: data.data.images[0].url
                 });
             });
 
