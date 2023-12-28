@@ -7,7 +7,8 @@ const getPlaylist = async (req = request, res = response) => {
     try {
         const token = await getAuthFromClientCredentials();
         console.log('Token obtenido:', token);
-        const { id } = req.params; // Aquí obtenemos el ID de la playlist
+        const { id } = req.params; 
+        let playlistData = [];// Aquí obtenemos el ID de la playlist
 
         const responseFromSpotify = await axios.get(`https://api.spotify.com/v1/playlists/${id}`, {
             headers: {
@@ -16,18 +17,20 @@ const getPlaylist = async (req = request, res = response) => {
         });
 
         if (responseFromSpotify.status === 200) {
+            let playlistData = [];
             const responseData = responseFromSpotify.data;
 
             // Extraer información específica de la respuesta para personalizarla
-            const playlistInfo = {
+
+            playlistData.push({
                 id: id,
                 nombrePlaylist: responseData.name,
                 imagenPlaylist: responseData.images[0].url,
                 creador: responseData.owner.display_name,
                 totalCanciones: responseData.tracks.total,
-            };
+            });
 
-            res.status(200).json(playlistInfo);
+            res.status(200).json(playlistData);
         } else if (responseFromSpotify.status === 401) {
             res.status(401).json({ message: 'Solicitud no autorizada.' });
         } else if (responseFromSpotify.status === 403) {
